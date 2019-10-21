@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block body %}
+    <script src="{{url_for('static', filename='howler.js')}}"></script>
+    <h2>Music</h2>
+    <p>Music:</p>
+    <audio id='audio1' src="/static/music/06 Unsterblich.mp3" controls="controls" autoplay="autoplay"></audio><br>
+    <audio id='audio2' src="/static/music/06 Unsterblich.mp3" controls="controls" autoplay="autoplay"></audio>
+    <ul>
+    {% for song in songs %}
+        <li><a href="javascript:void(0);">{{song}}</a></li>
+        <div><a href="javascript:void(0);">{{song}}</a></div>
+        <audio id='audio1' src="/static/music/{{song}}" controls="controls" autoplay="autoplay"></audio><br>
+    {% endfor %}
+    </ul>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            Results:
+            <pre>
+                {% for message in messages %}
+{{ message }}
+                {% endfor %}
+            </pre>
+        {% endif %}
+    {% endwith %}
+    <script type='text/javascript'>
+        {% for song in songs %}
+
+            $('li').click(function(){
+                var str = $(this).text()
+                var audio1 = document.getElementById('audio1');
+                audio1.attr('src', '/static/music/'+str);
+            });
+            $('div').click(function(){
+                var str = $(this).text()
+                var audio1 = document.getElementById('audio1');
+                var audio2 = document.getElementById('audio2')
+                audio2.attr('src', '/static/music/'+str);
+            });
+        {% endfor %}
+
+        var sound = new Howl({
+  src: ['sound.webm', 'sound.mp3', 'sound.wav'],
+  autoplay: true,
+  loop: true,
+  volume: 0.5,
+  onend: function() {
+    console.log('Finished!');
+  }
+});
+    </script>
+
+{% endblock %}
+{% block nav %}
+<li><a href="{{url_for('index')}}">back</a></li>
+{% endblock %}
